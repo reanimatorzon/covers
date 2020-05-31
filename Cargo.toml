@@ -8,10 +8,10 @@ description = "Lightweight library allowing to mock functions in Rust"
 homepage = "https://github.com/reanimatorzon/covers"
 repository = "https://github.com/reanimatorzon/covers"
 readme = "README.md"
-license = "MIT"
 license-file = "LICENSE.md"
 keywords = ["rust", "mock", "fn", "function"]
 categories = ["development-tools::testing"]
+include = ["./impl"]
 
 [lib]
 name = "covers"
