@@ -2,12 +2,12 @@
 # It is not intended for manual editing.
 [[package]]
 name = "covers"
-version = "0.1.0-beta.2"
+version = "0.1.0-beta.3"
 
 [[package]]
 name = "covers_it"
-version = "0.1.0-beta.2"
+version = "0.1.0-beta.3"
 dependencies = [
- "covers 0.1.0-beta.2",
+ "covers 0.1.0-beta.3",
 ]
 
