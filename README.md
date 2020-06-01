@@ -69,11 +69,11 @@ impl Struct {
     * in structs implementation blocks
     
 ### Keep in mind ###
-* `scope = impl` hint is required for static struct functions / methods
+* `scope = impl` hint is required for static struct functions / static methods
 * There is no need in adding `scope = impl` struct variant's function, 
   it is set automatically for all functions with the first argument `self`
-* Using `#[mock]` for all function created only for testing purposes is recommended 
-  for the sake of performance
+* `#[mock]` let compiler know that this code is not for release build.
+  Also it makes function `pub`. You can disable this logic passing `no-pub` for the crate's `features` 
 * Using `#[mock]` is strictly required when we use reference to an original function 
   inside. (Usually it is the same name function prepended by underscore `_`). Otherwise release build could fail.
 * You can change a prefix of original function passing `features=["__"]` or `features=["_orig_"]`

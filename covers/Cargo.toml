@@ -19,9 +19,15 @@ harness = true
 
 [features]
 default = []
-__ = []
-_orig_ = []
 
+# switches prefix to double underscore: "__"
+# example `one` => `__one`, `mod::one` to `mod::__one`, etc.
+__ = []
+# switches prefix to longer version - "_orig_"
+_orig_ = []
+# functions denoted as '#[mock]' become public by default,
+# this flag disables this feature
+no-pub = []
 
 
 

@@ -196,10 +196,10 @@ pub fn mocked(args: TokenStream, input: TokenStream) -> TokenStream {
 ///
 /// In other words it is prepended with `#[cfg(any(debug_assertions, test))]`.
 ///
-/// It is very useful to not compile mock functions for release.
-///
-/// It is **strictly** needed when we use reference
-/// to original logic of the mocked function.
+/// * It is very useful to not compile mock functions for release.
+/// * It makes function public.
+/// * It is **strictly** needed when we use reference to original logic of the
+///   mocked function.
 ///
 /// Example:
 /// ```rust
@@ -216,12 +216,49 @@ pub fn mocked(args: TokenStream, input: TokenStream) -> TokenStream {
 /// ```
 #[proc_macro_attribute]
 pub fn mock(_args: TokenStream, input: TokenStream) -> TokenStream {
+    if !(cfg!(debug_assertions) || cfg!(test)) {
+        return input;
+    }
+
     "#[cfg(any(debug_assertions, test))]"
         .parse::<TokenStream>()
         .unwrap()
         .into_iter()
-        .chain(input.into_iter())
+        .chain(if cfg!(feature = "no-pub") {
+            input.into_iter()
+        } else {
+            make_public(input).into_iter()
+        })
         .collect()
+}
+
+fn make_public(input: TokenStream) -> TokenStream {
+    let mut result = vec![];
+    let mut is_public = false;
+
+    let mut iter = input.into_iter();
+    while let Some(token) = iter.next() {
+        match &token {
+            TokenTree::Ident(ident) if ident.to_string() == "pub" => {
+                is_public = true;
+            },
+            TokenTree::Ident(ident) if ident.to_string() == "fn" => {
+                if !&is_public {
+                    result.push(TokenTree::from(Ident::new("pub", Span::def_site())));
+                }
+                // push remaining
+                result.push(token.to_owned());
+                for token in iter {
+                    result.push(token.to_owned());
+                }
+                break;
+            },
+            _ => (),
+        }
+        result.push(token.to_owned());
+    }
+
+    result.into_iter().collect()
 }
 
 fn parse_params(args: TokenStream) -> Params {
