@@ -1,37 +1,6 @@
-[package]
-name = "covers"
-version = "0.1.0-beta.1"
-authors = ["Vasily Bolgar <vasily.bolgar@gmail.com>"]
-edition = "2018"
+[workspace]
 
-description = "Lightweight library allowing to mock functions in Rust"
-homepage = "https://github.com/reanimatorzon/covers"
-repository = "https://github.com/reanimatorzon/covers"
-readme = "README.md"
-license-file = "LICENSE.md"
-keywords = ["rust", "mock", "fn", "function"]
-categories = ["development-tools::testing"]
-include = ["./impl"]
-
-[lib]
-name = "covers"
-doctest = true
-harness = true
-
-[[bin]]
-name = "covers_demo"
-path = "./src/demo.rs"
-doctest = true
-harness = true
-
-# // TODO: check how to pass features
-[features]
-default = ["_"]
-_ = []
-__ = []
-_orig_ = []
-
-[dependencies]
-covers_impl = { path = "./impl", version = "0.1.0-beta.1" }
-
-
+members = [
+    "covers",
+    "covers_it",
+]

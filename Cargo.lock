@@ -3,11 +3,11 @@
 [[package]]
 name = "covers"
 version = "0.1.0-beta.1"
-dependencies = [
- "covers_impl 0.1.0-beta.1",
-]
 
 [[package]]
-name = "covers_impl"
+name = "covers_it"
 version = "0.1.0-beta.1"
+dependencies = [
+ "covers 0.1.0-beta.1",
+]
 

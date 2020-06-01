@@ -17,7 +17,6 @@ use Stage::*;
 const ORIGINAL_FUNC_PREFIX: &str = "_";
 #[cfg(feature = "__")]
 const ORIGINAL_FUNC_PREFIX: &str = "__";
-
 #[cfg(feature = "_orig_")]
 const ORIGINAL_FUNC_PREFIX: &str = "_orig_";
 
@@ -48,7 +47,7 @@ struct Params {
 /// Usage
 /// ======
 /// ```
-/// #[covers(mock_foo)]
+/// #[covered(mock_foo)]
 /// fn foo(name: &str) -> String {
 ///     format!("Response: Foo = {}", name)
 /// }
@@ -57,7 +56,7 @@ struct Params {
 ///     format!("Response: Mocked(Foo = {})", another_name)
 /// }
 ///
-/// #[covers(module::mock_bar)]
+/// #[covered(module::mock_bar)]
 /// fn bar(name: &str) -> String {
 ///     format!("Response: Bar = {}", name)
 /// }
@@ -78,7 +77,7 @@ struct Params {
 /// pub struct Struct {}
 ///
 /// impl Struct {
-///     #[covers(Struct::mock_baz, scope = impl)]
+///     #[covered(Struct::mock_baz, scope = impl)]
 ///     fn baz(name: &str) -> String {
 ///         format!("Response: Baz = {}", name)
 ///     }
@@ -87,7 +86,7 @@ struct Params {
 ///         format!("Response: Baz = {}", name)
 ///     }
 ///
-///     #[covers(module::yyy)]
+///     #[covered(module::yyy)]
 ///     fn xxx(self, name: &str) -> String {
 ///         format!("Response: Baz = {}", name)
 ///     }
@@ -97,8 +96,8 @@ struct Params {
 /// assert_eq!(bar("Jane"), "1");
 /// ```
 #[proc_macro_attribute]
-pub fn covers(args: TokenStream, input: TokenStream) -> TokenStream {
-    if cfg!(not(debug_assertions)) {
+pub fn covered(args: TokenStream, input: TokenStream) -> TokenStream {
+    if !(cfg!(debug_assertions) || cfg!(test)) {
         return input;
     }
 
@@ -184,6 +183,16 @@ pub fn covers(args: TokenStream, input: TokenStream) -> TokenStream {
     );
 
     code.parse::<TokenStream>().unwrap().into_iter().collect()
+}
+
+#[proc_macro_attribute]
+pub fn covers(_args: TokenStream, input: TokenStream) -> TokenStream {
+    "#[cfg(any(debug_assertions, test))]"
+        .parse::<TokenStream>()
+        .unwrap()
+        .into_iter()
+        .chain(input.into_iter())
+        .collect()
 }
 
 fn parse_params(args: TokenStream) -> Params {
