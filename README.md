@@ -1,3 +1,5 @@
+![Rust](https://github.com/reanimatorzon/covers/workflows/Rust/badge.svg)
+
 # covers #
 Lightweight library allowing to mock functions in Rust
 
