@@ -53,9 +53,6 @@ impl Struct {
         format!("Response: Baz = {}", name)
     }
 }
-
-assert_eq!(foo("John"), "1");
-assert_eq!(bar("Jane"), "1");
 ```
 
 ## Notes ##
