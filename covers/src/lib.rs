@@ -101,9 +101,6 @@ struct Params {
 ///         format!("Response: Baz = {}", name)
 ///     }
 /// }
-///
-/// assert_eq!(foo("John"), "1");
-/// assert_eq!(bar("Jane"), "1");
 /// ```
 #[proc_macro_attribute]
 pub fn mocked(args: TokenStream, input: TokenStream) -> TokenStream {
