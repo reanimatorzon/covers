@@ -75,7 +75,11 @@ assert_eq!(bar("Jane"), "1");
 * Using `#[mock]` for all function created only for testing purposes is recommended 
   for the sake of performance
 * Using `#[mock]` is strictly required when we use reference to an original function 
-  inside. Usually it is the same name function prepended by underscore `_`   
-    
+  inside. (Usually it is the same name function prepended by underscore `_`). Otherwise release build could fail.
+* You can change a prefix of original function passing `features=["__"]` or `features=["_orig_"]`
+  in `[dependencies]` block of `Cargo.toml` for `covers` crate. One underscore is default - `"_"`
+ 
+NB: You can find lots of usage examples [here](https://github.com/reanimatorzon/covers/blob/master/covers_it/src/main.rs) -
+in the crate of integration tests.     
 
  

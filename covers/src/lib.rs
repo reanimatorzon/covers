@@ -39,7 +39,8 @@ struct Params {
 }
 
 /// Wraps the function below for calling another mock function
-/// named according to the macro's argument
+/// named according to the macro's argument when `#[cfg(debug_assertions)]`
+/// enabled. Call original or mock function according to `#[cfg(test)]` flag.
 ///
 /// Function signature should be the same as original: arguments, output.
 ///
