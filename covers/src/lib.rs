@@ -13,7 +13,10 @@ use proc_macro::*;
 
 use Stage::*;
 
-#[cfg(feature = "_")]
+#[cfg(all(feature = "__", feature = "_orig_"))]
+panic!("only single prefix feature could be provided: '__' or '_orig_'. Note: '_' is default value");
+
+#[cfg(all(not(feature = "__"), not(feature = "_orig_")))]
 const ORIGINAL_FUNC_PREFIX: &str = "_";
 #[cfg(feature = "__")]
 const ORIGINAL_FUNC_PREFIX: &str = "__";
