@@ -1,4 +1,4 @@
-//! **The crate stores implementation of the macro**
+//! **The crate stores the implementation of macros**
 //!
 //! Integration tests are outside in [`covers_it`](https://github.com/reanimatorzon/covers/tree/master/covers_it).
 //!
@@ -35,7 +35,10 @@ struct Params {
     options: HashMap<String, String>,
 }
 
-/// Mocks an underline function wrapping its call
+/// Wraps the function below for calling another mock function
+/// named according to the macro's argument
+///
+/// Function signature should be the same as original: arguments, output.
 ///
 /// In most cases you need to pass only the single required argument
 /// fully-qualified reference to a mock function.
@@ -47,7 +50,9 @@ struct Params {
 /// Usage
 /// ======
 /// ```
-/// #[covered(mock_foo)]
+/// use covers::{mocked, mock};
+///
+/// #[mocked(mock_foo)]
 /// fn foo(name: &str) -> String {
 ///     format!("Response: Foo = {}", name)
 /// }
@@ -56,15 +61,17 @@ struct Params {
 ///     format!("Response: Mocked(Foo = {})", another_name)
 /// }
 ///
-/// #[covered(module::mock_bar)]
+/// #[mocked(module::mock_bar)]
 /// fn bar(name: &str) -> String {
 ///     format!("Response: Bar = {}", name)
 /// }
 ///
+/// pub struct Struct {}
+///
 /// mod module {
 ///     use super::*;
 ///
-///     #[covers]
+///     #[mock]
 ///     pub fn mock_bar(name: &str) -> String {
 ///         let original_function_result = _bar(name);
 ///         format!("Response: Mocked({})", original_function_result)
@@ -75,10 +82,8 @@ struct Params {
 ///     }
 /// }
 ///
-/// pub struct Struct {}
-///
 /// impl Struct {
-///     #[covered(Struct::mock_baz, scope = impl)]
+///     #[mocked(Struct::mock_baz, scope = impl)]
 ///     fn baz(name: &str) -> String {
 ///         format!("Response: Baz = {}", name)
 ///     }
@@ -87,7 +92,7 @@ struct Params {
 ///         format!("Response: Baz = {}", name)
 ///     }
 ///
-///     #[covered(module::yyy)]
+///     #[mocked(module::yyy)]
 ///     fn xxx(self, name: &str) -> String {
 ///         format!("Response: Baz = {}", name)
 ///     }
@@ -97,7 +102,7 @@ struct Params {
 /// assert_eq!(bar("Jane"), "1");
 /// ```
 #[proc_macro_attribute]
-pub fn covered(args: TokenStream, input: TokenStream) -> TokenStream {
+pub fn mocked(args: TokenStream, input: TokenStream) -> TokenStream {
     if !(cfg!(debug_assertions) || cfg!(test)) {
         return input;
     }
@@ -186,8 +191,30 @@ pub fn covered(args: TokenStream, input: TokenStream) -> TokenStream {
     code.parse::<TokenStream>().unwrap().into_iter().collect()
 }
 
+/// Marks the following function to be built only for testing purposes
+///
+/// In other words it is prepended with `#[cfg(any(debug_assertions, test))]`.
+///
+/// It is very useful to not compile mock functions for release.
+///
+/// It is **strictly** needed when we use reference
+/// to original logic of the mocked function.
+///
+/// Example:
+/// ```rust
+/// #[mocked(mock_bar)]
+/// fn bar(name: &str) -> String {
+///     format!("Response: Bar = {}", name)
+/// }
+///
+/// #[mock]
+/// pub fn mock_bar(name: &str) -> String {
+///     let original_function_result = _bar(name);
+///     format!("Response: Mocked({})", original_function_result)
+/// }
+/// ```
 #[proc_macro_attribute]
-pub fn covers(_args: TokenStream, input: TokenStream) -> TokenStream {
+pub fn mock(_args: TokenStream, input: TokenStream) -> TokenStream {
     "#[cfg(any(debug_assertions, test))]"
         .parse::<TokenStream>()
         .unwrap()

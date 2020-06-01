@@ -1,6 +1,6 @@
 [package]
 name = "covers"
-version = "0.1.0-beta.1"
+version = "0.1.0-beta.2"
 authors = ["Vasily Bolgar <vasily.bolgar@gmail.com>"]
 edition = "2018"
 
@@ -14,6 +14,7 @@ categories = ["development-tools::testing"]
 
 [lib]
 proc-macro = true
+doctest = false
 harness = true
 
 [features]

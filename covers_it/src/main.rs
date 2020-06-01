@@ -7,7 +7,7 @@
 //! ```rust
 //! #![allow(warnings)]
 //!
-//! use covers::{covered, covers};
+//! use covers::{mocked, mock};
 //!
 //! const ORIGINAL: &str = r#"
 //!
@@ -123,44 +123,44 @@
 //!         .join("\n")
 //! }
 //!
-//! #[covered(i_searched_for_lib_in_the_web)]
+//! #[mocked(i_searched_for_lib_in_the_web)]
 //! fn i_threw_a_wish_in(the_well: String) -> String {
 //!     format!("I threw a wish in {}", the_well)
 //! }
 //!
-//! #[covered(to_test_code_dry_avoid_wet)]
+//! #[mocked(to_test_code_dry_avoid_wet)]
 //! fn dont_ask_me_i_ll(never: &str, tell: &str) -> String {
 //!     format!("Don't ask me I'll {} {}", never, tell)
 //! }
 //!
-//! #[covered(theres_no_success_all)]
+//! #[mocked(theres_no_success_all)]
 //! fn i_looked_at_you_as(it_fell: &mut String) -> String {
 //!     format!("I looked at you as {}", it_fell)
 //! }
 //!
-//! #[covered(to_mock_fn_in_place)]
+//! #[mocked(to_mock_fn_in_place)]
 //! fn and_now_youre_in_my_way() -> (String, String) {
 //!     ("And now you're".to_string(), "in my way".to_string())
 //! }
 //!
-//! #[covered(lyrics_mocks::mockall_moctopus_too_bold)]
+//! #[mocked(lyrics_mocks::mockall_moctopus_too_bold)]
 //! fn id_trade_my_soul_for_a_wish() -> String {
 //!     "I'd trade my soul for a wish".to_string()
 //! }
 //!
-//! #[covered(Chorus::struct_macros_trait_and_thats_all)] // No chorus in real
+//! #[mocked(Chorus::struct_macros_trait_and_thats_all)] // No chorus in real
 //! fn pennies_and_dimes_for_a_kiss() -> String {
 //!     "Pennies and dimes for a kiss".to_string()
 //! }
 //!
 //! // Remaining...
 //!
-//! #[covered(so_then_github_please_behold)]
+//! #[mocked(so_then_github_please_behold)]
 //! fn i_wasnt_looking_for_this() -> String {
 //!     "I wasn't looking for this".to_string()
 //! }
 //!
-//! #[covered(there_is_my_brand_new_crate)]
+//! #[mocked(there_is_my_brand_new_crate)]
 //! fn but_now_youre_in_my_way() -> String {
 //!     "But now you're in my way".to_string()
 //! }
@@ -168,22 +168,22 @@
 //! mod pre_chorus {
 //!     use super::*;
 //!
-//!     #[covered(your_stare_was_holding_)]
+//!     #[mocked(your_stare_was_holding_)]
 //!     pub fn your_stare_was_holding() -> String {
 //!         "Your stare was holding".to_string()
 //!     }
 //!
-//!     #[covered(your_stars_i_am_hoping)]
+//!     #[mocked(your_stars_i_am_hoping)]
 //!     pub fn ripped_jeans_skin_was_showin() -> String {
 //!         "Ripped jeans, skin was showin'".to_string()
 //!     }
 //!
-//!     #[covered(lyrics_mocks::let_my_project_growing)]
+//!     #[mocked(lyrics_mocks::let_my_project_growing)]
 //!     pub fn hot_night_wind_was_blowin() -> String {
 //!         "Hot night, wind was blowin'".to_string()
 //!     }
 //!
-//!     #[covered(Chorus::test_your_code_do_it_safely)] // Still no chorus, that's the only struct in lib
+//!     #[mocked(Chorus::test_your_code_do_it_safely)] // Still no chorus, that's the only struct in lib
 //!     pub fn where_you_think_youre_going_baby() -> String {
 //!         "Where you think you're going baby?".to_string()
 //!     }
@@ -198,22 +198,22 @@
 //! pub struct Chorus {}
 //!
 //! impl Chorus {
-//!     #[covered(good_i_create_this_and_it_is_lightweight, scope = impl)]
+//!     #[mocked(good_i_create_this_and_it_is_lightweight, scope = impl)]
 //!     pub fn hey_i_just_met_you_and_this_is_crazy() -> String {
 //!         "Hey, I just met you and this is crazy".to_string()
 //!     }
 //!
-//!     #[covered(Chorus::your_test_environment_is_independent)]
+//!     #[mocked(Chorus::your_test_environment_is_independent)]
 //!     fn but_heres_my_number_so_call_me_maybe(self) -> String {
 //!         "But here's my number, so call me maybe".to_string()
 //!     }
 //!
-//!     #[covered(lyrics_mocks::its_hard_to_test_crate_creating_traits)]
+//!     #[mocked(lyrics_mocks::its_hard_to_test_crate_creating_traits)]
 //!     fn its_hard_to_look_right_at_you_baby(&self) -> String {
 //!         "It's hard to look right at you baby".to_string()
 //!     }
 //!
-//!     #[covered(LyricsMocks::so_here_is_covers_mock_functions_daily)]
+//!     #[mocked(LyricsMocks::so_here_is_covers_mock_functions_daily)]
 //!     fn but_here_is_my_number_so_call_me_maybe(&mut self) -> String {
 //!         "But here's my number, so call me maybe".to_string()
 //!     }
@@ -233,7 +233,7 @@
 //!     }
 //! }
 //!
-//! #[covered(it_rocks)]
+//! #[mocked(it_rocks)]
 //! fn applause() -> String {
 //!     "Encore!".to_string()
 //! }
@@ -292,7 +292,7 @@
 //!     }
 //! }
 //!
-//! #[covers]
+//! #[mock]
 //! fn your_stare_was_holding_() -> String {
 //!     pre_chorus::_your_stare_was_holding()
 //! }
@@ -307,7 +307,7 @@
 //! ```
 #![allow(warnings)]
 
-use covers::{covered, covers};
+use covers::{mock, mocked};
 
 const ORIGINAL: &str = r#"
 
@@ -423,44 +423,44 @@ fn beautify(lyrics: &str) -> String {
         .join("\n")
 }
 
-#[covered(i_searched_for_lib_in_the_web)]
+#[mocked(i_searched_for_lib_in_the_web)]
 fn i_threw_a_wish_in(the_well: String) -> String {
     format!("I threw a wish in {}", the_well)
 }
 
-#[covered(to_test_code_dry_avoid_wet)]
+#[mocked(to_test_code_dry_avoid_wet)]
 fn dont_ask_me_i_ll(never: &str, tell: &str) -> String {
     format!("Don't ask me I'll {} {}", never, tell)
 }
 
-#[covered(theres_no_success_all)]
+#[mocked(theres_no_success_all)]
 fn i_looked_at_you_as(it_fell: &mut String) -> String {
     format!("I looked at you as {}", it_fell)
 }
 
-#[covered(to_mock_fn_in_place)]
+#[mocked(to_mock_fn_in_place)]
 fn and_now_youre_in_my_way() -> (String, String) {
     ("And now you're".to_string(), "in my way".to_string())
 }
 
-#[covered(lyrics_mocks::mockall_moctopus_too_bold)]
+#[mocked(lyrics_mocks::mockall_moctopus_too_bold)]
 fn id_trade_my_soul_for_a_wish() -> String {
     "I'd trade my soul for a wish".to_string()
 }
 
-#[covered(Chorus::struct_macros_trait_and_thats_all)] // No chorus in real
+#[mocked(Chorus::struct_macros_trait_and_thats_all)] // No chorus in real
 fn pennies_and_dimes_for_a_kiss() -> String {
     "Pennies and dimes for a kiss".to_string()
 }
 
 // Remaining...
 
-#[covered(so_then_github_please_behold)]
+#[mocked(so_then_github_please_behold)]
 fn i_wasnt_looking_for_this() -> String {
     "I wasn't looking for this".to_string()
 }
 
-#[covered(there_is_my_brand_new_crate)]
+#[mocked(there_is_my_brand_new_crate)]
 fn but_now_youre_in_my_way() -> String {
     "But now you're in my way".to_string()
 }
@@ -468,22 +468,22 @@ fn but_now_youre_in_my_way() -> String {
 mod pre_chorus {
     use super::*;
 
-    #[covered(your_stare_was_holding_)]
+    #[mocked(your_stare_was_holding_)]
     pub fn your_stare_was_holding() -> String {
         "Your stare was holding".to_string()
     }
 
-    #[covered(your_stars_i_am_hoping)]
+    #[mocked(your_stars_i_am_hoping)]
     pub fn ripped_jeans_skin_was_showin() -> String {
         "Ripped jeans, skin was showin'".to_string()
     }
 
-    #[covered(lyrics_mocks::let_my_project_growing)]
+    #[mocked(lyrics_mocks::let_my_project_growing)]
     pub fn hot_night_wind_was_blowin() -> String {
         "Hot night, wind was blowin'".to_string()
     }
 
-    #[covered(Chorus::test_your_code_do_it_safely)] // Still no chorus, that's the only struct in lib
+    #[mocked(Chorus::test_your_code_do_it_safely)] // Still no chorus, that's the only struct in lib
     pub fn where_you_think_youre_going_baby() -> String {
         "Where you think you're going baby?".to_string()
     }
@@ -498,22 +498,22 @@ mod pre_chorus {
 pub struct Chorus {}
 
 impl Chorus {
-    #[covered(good_i_create_this_and_it_is_lightweight, scope = impl)]
+    #[mocked(good_i_create_this_and_it_is_lightweight, scope = impl)]
     pub fn hey_i_just_met_you_and_this_is_crazy() -> String {
         "Hey, I just met you and this is crazy".to_string()
     }
 
-    #[covered(Chorus::your_test_environment_is_independent)]
+    #[mocked(Chorus::your_test_environment_is_independent)]
     fn but_heres_my_number_so_call_me_maybe(self) -> String {
         "But here's my number, so call me maybe".to_string()
     }
 
-    #[covered(lyrics_mocks::its_hard_to_test_crate_creating_traits)]
+    #[mocked(lyrics_mocks::its_hard_to_test_crate_creating_traits)]
     fn its_hard_to_look_right_at_you_baby(&self) -> String {
         "It's hard to look right at you baby".to_string()
     }
 
-    #[covered(LyricsMocks::so_here_is_covers_mock_functions_daily)]
+    #[mocked(LyricsMocks::so_here_is_covers_mock_functions_daily)]
     fn but_here_is_my_number_so_call_me_maybe(&mut self) -> String {
         "But here's my number, so call me maybe".to_string()
     }
@@ -533,7 +533,7 @@ impl Chorus {
     }
 }
 
-#[covered(it_rocks)]
+#[mocked(it_rocks)]
 fn applause() -> String {
     "Encore!".to_string()
 }
@@ -592,7 +592,7 @@ impl LyricsMocks {
     }
 }
 
-#[covers]
+#[mock]
 fn your_stare_was_holding_() -> String {
     pre_chorus::_your_stare_was_holding()
 }
