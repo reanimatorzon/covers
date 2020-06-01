@@ -1,8 +1,8 @@
-//! **This internal crate stores the implementation of macro**
+//! **The crate stores implementation of the macro**
 //!
-//! Keeping outside of the primary crate for testing purposes.
+//! Integration tests are outside in [`covers_it`](../covers_it/index.html).
 //!
-//! @see [https://github.com/dtolnay/proc-macro-hack]()
+//! @see [https://github.com/dtolnay/proc-macro-hack](https://github.com/dtolnay/proc-macro-hack)
 
 #![feature(proc_macro_def_site)]
 
@@ -64,6 +64,7 @@ struct Params {
 /// mod module {
 ///     use super::*;
 ///
+///     #[covers]
 ///     pub fn mock_bar(name: &str) -> String {
 ///         let original_function_result = _bar(name);
 ///         format!("Response: Mocked({})", original_function_result)
