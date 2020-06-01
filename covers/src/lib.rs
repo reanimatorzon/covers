@@ -1,6 +1,6 @@
 //! **The crate stores implementation of the macro**
 //!
-//! Integration tests are outside in [`covers_it`](../covers_it/index.html).
+//! Integration tests are outside in [`covers_it`](https://github.com/reanimatorzon/covers/tree/master/covers_it).
 //!
 //! @see [https://github.com/dtolnay/proc-macro-hack](https://github.com/dtolnay/proc-macro-hack)
 
