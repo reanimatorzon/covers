@@ -78,6 +78,12 @@ impl Struct {
   inside. (Usually it is the same name function prepended by underscore `_`). Otherwise release build could fail.
 * You can change a prefix of original function passing `features=["__"]` or `features=["_orig_"]`
   in `[dependencies]` block of `Cargo.toml` for `covers` crate. One underscore is default - `"_"`
+  
+### Known Issues ###
+1. If you relying on mocks calling `_original_function()` in your tests,
+   you will face compilation errors during `cargo test --release` 
+   cause no `#[cfg(debug_assertions)]` enabled.
+   Consider a test be reworked or avoid using original functions  
  
 NB: You can find lots of usage examples [here](https://github.com/reanimatorzon/covers/blob/master/covers_it/src/main.rs) -
 in the crate of integration tests.     

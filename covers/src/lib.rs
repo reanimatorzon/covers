@@ -117,26 +117,16 @@ pub fn mocked(args: TokenStream, input: TokenStream) -> TokenStream {
 
     let mut fn_orig_name = String::new();
     let mut fn_args_string = String::new();
-    let mut fn_is_public = false;
 
     // FIXME: dirty hack for 'Self::' prefix to functions inside 'impl' block.
     let mut is_impl_scope = false;
 
     for token in input {
         match &token {
-            TokenTree::Ident(ident) if cmp(&stage, FnIdentFound) < 0 => {
-                if ident.to_string() == "pub" {
-                    fn_is_public = true;
-                    signature.push(token.clone());
-                    original.push(token);
-                } else if ident.to_string() == "fn" {
-                    stage = FnIdentFound;
-                    signature.push(token.clone());
-                    if !&fn_is_public {
-                        original.push(TokenTree::from(Ident::new("pub", Span::def_site())));
-                    }
-                    original.push(token);
-                }
+            TokenTree::Ident(ident) if cmp(&stage, FnIdentFound) < 0 && ident.to_string() == "fn" => {
+                stage = FnIdentFound;
+                signature.push(token.clone());
+                original.push(token);
             },
             TokenTree::Ident(ident) if cmp(&stage, FnIdentFound) == 0 => {
                 stage = FnNameFound;
@@ -181,7 +171,9 @@ pub fn mocked(args: TokenStream, input: TokenStream) -> TokenStream {
             return {fq}{fn_orig_name}{arguments};
         }}
         "#,
-        fn_original = original.into_iter().collect::<TokenStream>(),
+        fn_original = make_public(original.into_iter().collect())
+            .into_iter()
+            .collect::<TokenStream>(),
         fn_orig_name = fn_orig_name,
         fn_mock_name = args.reference,
         signature = signature.into_iter().collect::<TokenStream>(),
@@ -197,7 +189,7 @@ pub fn mocked(args: TokenStream, input: TokenStream) -> TokenStream {
 /// In other words it is prepended with `#[cfg(any(debug_assertions, test))]`.
 ///
 /// * It is very useful to not compile mock functions for release.
-/// * It makes function public.
+/// * It makes function public - Can be disabled with `features = ["no-pub"]`
 /// * It is **strictly** needed when we use reference to original logic of the
 ///   mocked function.
 ///

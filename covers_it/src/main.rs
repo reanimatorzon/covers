@@ -258,7 +258,8 @@ fn to_mock_fn_in_place() -> (String, String) {
 mod lyrics_mocks {
     use super::*;
 
-    pub fn mockall_moctopus_too_bold() -> String {
+    #[mock] // also makes function public
+    fn mockall_moctopus_too_bold() -> String {
         "'Mockall', 'moctopus' - too bold".to_string()
     }
 
@@ -266,7 +267,8 @@ mod lyrics_mocks {
         "It's hard to test crate creating traits".to_string()
     }
 
-    pub fn let_my_project_growing() -> String {
+    #[mock] // also makes function public
+    fn let_my_project_growing() -> String {
         "Let my project growing".to_string()
     }
 }
