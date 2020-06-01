@@ -1,6 +1,9 @@
 # covers #
 Lightweight library allowing to mock functions in Rust
 
+## Crate ##
+[https://crates.io/crates/covers](https://crates.io/crates/covers)
+
 ## Usage ##
 ```rust
 use covers::{mocked, mock};
