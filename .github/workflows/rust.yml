@@ -43,35 +43,35 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         toolchain: nightly
-        command: cargo
-        args: +nightly build --verbose
+        command: build
+        args: --verbose
     - name: Tests
       uses: actions-rs/cargo@v1
       with:
         toolchain: nightly
-        command: cargo
-        args: +nightly test --verbose
+        command: test
+        args: --verbose
     - name: Build (Stable)
       uses: actions-rs/cargo@v1
       with:
         toolchain: stable
-        command: cargo
-        args: build --verbose
+        command: build
+        args: --verbose
     - name: Tests (Stable)
       uses: actions-rs/cargo@v1
       with:
         toolchain: stable
-        command: cargo
-        args: test --verbose
+        command: test
+        args: --verbose
     - name: Build (Release)
       uses: actions-rs/cargo@v1
       with:
         toolchain: nightly
-        command: cargo
-        args: build --release --verbose
+        command: build
+        args: --release --verbose
     - name: Build (Stable, Release)
       uses: actions-rs/cargo@v1
       with:
         toolchain: stable
-        command: cargo
-        args: build --release --verbose
+        command: build
+        args: --release --verbose
