@@ -74,18 +74,19 @@ impl Struct {
 * `scope = impl` hint is required for static struct functions / static methods
 * There is no need in adding `scope = impl` struct variant's function, 
   it is set automatically for all functions with the first argument `self`
-* `#[mock]` let compiler know that this code is not for release build.
-  Also it makes function `pub`. You can disable this logic passing `no-pub` for the crate's `features` 
+* `#[mock]` let compiler know that this code should not be compiled for release builds.
+
+  Otherwise, it makes related function `pub`. You can disable this logic passing `no-pub` for the crate's `features` 
 * Using `#[mock]` is strictly required when we use reference to an original function 
   inside. (Usually it is the same name function prepended by underscore `_`). Otherwise release build could fail.
 * You can change a prefix of original function passing `features=["__"]` or `features=["_orig_"]`
   in `[dependencies]` block of `Cargo.toml` for `covers` crate. One underscore is default - `"_"`
   
 ### Known Issues ###
-1. If you relying on mocks calling `_original_function()` in your tests,
-   you will face compilation errors during `cargo test --release` 
-   cause no `#[cfg(debug_assertions)]` enabled.
-   Consider a test be reworked or avoid using original functions  
+1. Updated: If you relying on mocks calling `_original_function()` in your tests
+   you should be aware of: `cargo test --release` can lead to unexpected results
+   or assertion errors - cause no `#[cfg(debug_assertions)]` enabled.
+   Consider a test be reworked, narrow scope or avoid using original functions  
  
 NB: You can find lots of usage examples [here](https://github.com/reanimatorzon/covers/blob/master/covers_it/src/main.rs) -
 in the crate of integration tests.     

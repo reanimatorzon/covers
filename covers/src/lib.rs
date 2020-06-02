@@ -4,8 +4,6 @@
 //!
 //! @see [https://github.com/dtolnay/proc-macro-hack](https://github.com/dtolnay/proc-macro-hack)
 
-#![feature(proc_macro_def_site)]
-
 use std::collections::HashMap;
 
 use proc_macro::Delimiter::{Brace, Parenthesis};
@@ -208,20 +206,15 @@ pub fn mocked(args: TokenStream, input: TokenStream) -> TokenStream {
 /// ```
 #[proc_macro_attribute]
 pub fn mock(_args: TokenStream, input: TokenStream) -> TokenStream {
-    if !(cfg!(debug_assertions) || cfg!(test)) {
-        return input;
-    }
-
-    "#[cfg(any(debug_assertions, test))]"
-        .parse::<TokenStream>()
-        .unwrap()
-        .into_iter()
-        .chain(if cfg!(feature = "no-pub") {
-            input.into_iter()
+    if cfg!(debug_assertions) || cfg!(test) {
+        if cfg!(feature = "no-pub") {
+            input
         } else {
-            make_public(input).into_iter()
-        })
-        .collect()
+            make_public(input)
+        }
+    } else {
+        TokenStream::new()
+    }
 }
 
 fn make_public(input: TokenStream) -> TokenStream {
@@ -236,7 +229,7 @@ fn make_public(input: TokenStream) -> TokenStream {
             },
             TokenTree::Ident(ident) if ident.to_string() == "fn" => {
                 if !&is_public {
-                    result.push(TokenTree::from(Ident::new("pub", Span::def_site())));
+                    result.push(TokenTree::from(Ident::new("pub", ident.span())));
                 }
                 // push remaining
                 result.push(token.to_owned());
