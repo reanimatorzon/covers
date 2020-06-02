@@ -6,6 +6,10 @@ Lightweight library allowing to mock functions in Rust
 ## Crate ##
 [https://crates.io/crates/covers](https://crates.io/crates/covers)
 
+## Recent changes ##
+2020-06-02: #[mock] now corectly removes function below from release build
+2020-06-02: The crate now compiles with Rust 'stable' channel, so can be used in 'stable' projects
+
 ## Usage ##
 ```rust
 use covers::{mocked, mock};
