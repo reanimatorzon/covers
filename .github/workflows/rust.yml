@@ -18,46 +18,54 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         profile: minimal
-        toolchain: nightly
+        toolchain: nightly, stable
         override: true
         components: rustfmt, clippy
     - name: Format
       uses: actions-rs/cargo@v1
       with:
+        toolchain: nightly
         command: fmt
         args: --all -- --check
     - name: Lint
       uses: actions-rs/cargo@v1
       with:
+        toolchain: nightly
         command: clippy
         args: -- -D warnings
     - name: Build
       uses: actions-rs/cargo@v1
       with:
+        toolchain: nightly
         command: cargo
         args: +nightly build --verbose
     - name: Tests
       uses: actions-rs/cargo@v1
       with:
+        toolchain: nightly
         command: cargo
         args: +nightly test --verbose
     - name: Build (Stable)
       uses: actions-rs/cargo@v1
       with:
+        toolchain: stable
         command: cargo
-        args:: +stable build --verbose
+        args: build --verbose
     - name: Tests (Stable)
       uses: actions-rs/cargo@v1
       with:
+        toolchain: stable
         command: cargo
-        args:: +stable test --verbose
+        args: test --verbose
     - name: Build (Release)
       uses: actions-rs/cargo@v1
       with:
+        toolchain: nightly
         command: cargo
-        args:: +nightly build --release --verbose
+        args: build --release --verbose
     - name: Build (Stable, Release)
       uses: actions-rs/cargo@v1
       with:
+        toolchain: stable
         command: cargo
-        args: +stable build --release --verbose
+        args: build --release --verbose
